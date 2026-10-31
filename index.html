@@ -1,0 +1,959 @@
+<title>AWS Student Builder Group at UW</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<script>document.documentElement.classList.add('js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout concept: one dark violet world from the club logo. A pinned, scroll-driven opening walks through the four programs while the logo chip reacts. Below it, giant one-word section titles, a pinned horizontal photo wall, a full-bleed project gallery and a marquee call to action. */
+:root{
+  --bg:#0b0912;
+  --surface:#151027;
+  --surface-2:#1c1535;
+  --line:#2e2650;
+  --ink:#f4f1ff;
+  --muted:#a79fc4;
+  --violet:#8b6cff;
+  --amber:#ffa31a;
+  --amber-ink:#1a1100;
+  --font-display:'Unbounded','Arial Black',system-ui,sans-serif;
+  --font-body:'Instrument Sans','Segoe UI',system-ui,sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+  --hh:64px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--font-body);margin:0;padding-block:0;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--bg)}
+a{color:inherit}
+p{margin:0}
+h1,h2,h3{font-family:var(--font-display);font-weight:700;letter-spacing:-0.03em;line-height:1.05;text-wrap:balance;margin:0}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font:500 12px/1 var(--font-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+.skip{position:absolute;left:-999px}
+.skip:focus{left:16px;top:16px;background:var(--surface);padding:8px 12px;z-index:60}
+
+/* header */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--bg);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:20px;min-height:64px;flex-wrap:wrap;padding-block:8px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;font:500 13px/1.15 var(--font-mono)}
+.brand svg{width:30px;height:30px;flex:none;fill:var(--ink)}
+nav{margin-left:auto;display:flex;gap:2px;flex-wrap:wrap;align-items:center}
+nav a{text-decoration:none;font-size:14px;font-weight:500;padding:8px 12px;color:var(--muted)}
+nav a:hover{color:var(--ink)}
+nav a.cta{background:var(--amber);color:var(--amber-ink);font-weight:600;margin-left:8px}
+nav a.cta:hover{filter:brightness(1.08)}
+
+/* buttons */
+.btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.btn{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-weight:600;font-size:15px;padding:14px 22px;border:1px solid var(--ink);color:var(--ink);transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.primary{background:var(--amber);border-color:var(--amber);color:var(--amber-ink)}
+.status{display:inline-block;font:500 12px/1 var(--font-mono);letter-spacing:.04em;padding:8px 11px;border:1px solid var(--line);color:var(--ink)}
+.status.soon{border-color:var(--amber);color:var(--amber)}
+
+/* ===== pinned story ===== */
+.story{position:relative}
+.js .story{height:480vh}
+.stage{position:relative;height:calc(100svh - var(--hh));min-height:560px;overflow:hidden;background:radial-gradient(70% 90% at 76% 48%,#2a1d57 0%,transparent 70%),var(--bg);border-bottom:1px solid var(--line)}
+.js .stage{position:sticky;top:var(--hh)}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
+.stage::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,var(--bg) 0%,color-mix(in srgb,var(--bg) 80%,transparent) 36%,transparent 62%)}
+.stage-grid{position:relative;z-index:2;height:100%;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:32px;align-items:center}
+.copy{min-width:0}
+.slides{display:block}
+.slide{min-width:0}
+.slide+.slide{margin-top:56px}
+.js .slides{display:grid}
+.js .slide{grid-area:1/1;align-self:center;margin-top:0;opacity:0;visibility:hidden;transform:translateY(36px);transition:opacity .5s,transform .7s cubic-bezier(.2,.8,.2,1),visibility .5s;pointer-events:none}
+.js .slide.on{opacity:1;visibility:visible;transform:none;pointer-events:auto}
+.js .slide.past{transform:translateY(-36px)}
+.stage h1{font-size:clamp(44px,7vw,108px);margin-top:20px}
+.stage h1 span{display:block}
+.stage h1 .amber{color:var(--amber)}
+.slide.s0 h1 span{animation:rise .9s cubic-bezier(.2,.8,.2,1) both}
+.slide.s0 h1 span:nth-child(2){animation-delay:.12s}
+.slide.s0 h1 span:nth-child(3){animation-delay:.24s}
+@keyframes rise{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+.word{font-size:clamp(46px,7.6vw,104px);color:var(--amber);margin-top:20px;overflow-wrap:anywhere;letter-spacing:-.045em}
+.lede{font-size:clamp(17px,1.6vw,20px);color:var(--muted);max-width:44ch;margin-top:22px}
+.slide .status{margin-top:26px}
+.next{margin-top:34px;display:inline-flex;gap:14px;align-items:center;flex-wrap:wrap;border:1px dashed var(--line);padding:12px 14px;font:400 13px/1.3 var(--font-mono);color:var(--muted);background:color-mix(in srgb,var(--bg) 60%,transparent)}
+.next b{color:var(--ink);font-weight:500}
+.next .in{color:var(--amber)}
+.dot{width:8px;height:8px;background:var(--amber);display:inline-block;animation:blink 1.6s steps(2,end) infinite}
+@keyframes blink{50%{opacity:.25}}
+.chip-anchor{justify-self:center;width:min(100%,520px,calc(100svh - var(--hh) - 140px));aspect-ratio:1}
+.steps-wrap{display:none;position:absolute;left:0;right:0;bottom:20px;z-index:3;align-items:center;justify-content:space-between;gap:16px;pointer-events:none}
+.js .steps-wrap{display:flex}
+.steps{display:flex;gap:2px;list-style:none;margin:0;padding:0;pointer-events:auto;flex-wrap:wrap}
+.st{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:10px;padding:10px 16px 10px 0;font:500 12px/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.st i{width:10px;height:10px;background:var(--line);display:block;transition:background .3s}
+.st:hover{color:var(--ink)}
+.st:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.st.on{color:var(--ink)}
+.st.on i{background:var(--amber)}
+.cue{display:flex;align-items:center;gap:10px;font:500 12px/1 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);transition:opacity .4s}
+.cue i{display:block;width:1px;height:34px;background:linear-gradient(var(--amber),transparent);animation:cue 1.8s ease-in-out infinite}
+@keyframes cue{0%{transform:scaleY(.2);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(.2);transform-origin:bottom}}
+.stage:not(.p0) .cue{opacity:0}
+
+/* reveal */
+.r-pre{opacity:.3;transform:translateY(28px)}
+.r-pre,.r-in{transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+.r-in{opacity:1;transform:none}
+
+/* statement */
+.statement{padding-block:160px 0}
+.lit{margin:22px 0 0;font:600 clamp(30px,5vw,72px)/1.08 var(--font-body);letter-spacing:-0.03em;max-width:19em;text-wrap:pretty}
+.lit .w{color:#6f6693;transition:color .3s}
+.lit .w.on{color:var(--ink)}
+.lit .w.key.on{color:var(--amber)}
+
+/* section titles */
+.sec{padding-block:160px 0}
+.sec-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:56px}
+.mega{font:700 clamp(40px,11vw,168px)/.9 var(--font-display);letter-spacing:-.05em;text-transform:uppercase}
+.sec-top p{color:var(--muted);font-size:18px;max-width:34ch}
+
+/* overview pillars */
+.sec-top .back{font:500 12px/1 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:10px 0}
+.sec-top .back:hover{color:var(--amber)}
+.sec-top .eyebrow{margin-bottom:18px}
+.mega.sm{font-size:clamp(34px,6vw,84px)}
+.ico{width:56px;height:56px;fill:none;stroke:var(--amber);stroke-width:3;stroke-linecap:square;stroke-linejoin:miter;flex:none}
+@keyframes draw{from{stroke-dashoffset:220}to{stroke-dashoffset:0}}
+.pillars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;align-items:end;padding-top:12px}
+.pillar{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:14px;min-height:440px;padding:46px 26px 62px;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-top:0;background:repeating-linear-gradient(90deg,transparent 0 22px,rgba(255,255,255,.03) 22px 24px),linear-gradient(180deg,var(--surface-2),var(--surface));transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .3s}
+.pillar:nth-child(even){min-height:510px}
+.pillar::before{content:"";position:absolute;left:-9px;right:-9px;top:0;height:16px;background:var(--amber)}
+.pillar::after{content:"";position:absolute;left:-9px;right:-9px;bottom:0;height:20px;background:#3a2f66;transition:background .3s}
+.pillar h3{font-size:clamp(24px,2.4vw,32px);margin-top:10px}
+.pillar p{color:var(--muted)}
+.pillar .status{margin-top:4px}
+.pillar .go{margin-top:auto;font:500 13px/1 var(--font-mono);color:var(--violet);transition:transform .3s,color .3s}
+.pillar:hover{transform:translateY(-10px);border-color:var(--amber);box-shadow:0 30px 60px -24px rgba(139,108,255,.45)}
+.pillar:hover::after{background:var(--amber)}
+.pillar:hover .go{color:var(--ink);transform:translateX(6px)}
+.pillar:hover .ico *{stroke-dasharray:220;animation:draw 1s ease-out both}
+.pillar:focus-visible{outline:3px solid var(--amber);outline-offset:6px}
+
+/* timeline */
+.tlh{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:24px;padding-top:50px;margin-top:10px}
+.tlh::before{content:"";position:absolute;left:0;right:0;top:10px;height:2px;background:repeating-linear-gradient(90deg,var(--line) 0 8px,transparent 8px 14px)}
+.tlh::after{content:"";position:absolute;left:0;top:10px;height:2px;width:var(--fill,0px);background:var(--amber);box-shadow:0 0 14px var(--amber)}
+.tl-i{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-width:0}
+.tl-i .node{position:absolute;left:0;top:-50px;width:22px;height:22px;background:var(--bg);border:2px solid var(--amber);z-index:1}
+.tl-i.past .node{background:var(--amber)}
+.tl-i.upnext .node{box-shadow:0 0 0 6px rgba(255,163,26,.22)}
+.tl-i.past h3,.tl-i.past p,.tl-i.past .d{opacity:.5}
+.tl-i .d{font:500 12px/1 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--amber)}
+.tl-i h3{font-size:clamp(18px,1.8vw,24px);margin-top:6px}
+.tl-i p{color:var(--muted);font-size:15px}
+.tl-i .status{margin-top:6px}
+.today{position:absolute;top:-8px;left:var(--fill,0px);transform:translateX(-50%);z-index:2;font:500 10.5px/1 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;background:var(--violet);color:var(--bg);padding:6px 8px}
+.today::after{content:"";position:absolute;left:50%;top:100%;border:5px solid transparent;border-top-color:var(--violet);transform:translateX(-50%)}
+
+/* dedicated sections */
+.lead{font:500 clamp(20px,2.2vw,30px)/1.35 var(--font-body);letter-spacing:-.015em;max-width:30em}
+.two{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:56px;align-items:center}
+.two>*{min-width:0}
+.photo{margin:0}
+.photo img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.photo figcaption{font:400 12.5px/1.4 var(--font-mono);color:var(--muted);margin-top:10px}
+.feats{list-style:none;margin:32px 0 0;padding:0;border-top:1px solid var(--line)}
+.feats li{display:grid;grid-template-columns:48px minmax(0,1fr);gap:22px;padding:22px 0;border-bottom:1px solid var(--line)}
+.feats .ico{width:44px;height:44px}
+.feats h3{font-size:clamp(18px,1.8vw,22px);letter-spacing:-.02em}
+.feats p{color:var(--muted);margin-top:6px}
+.nextline{margin-top:26px;font:400 13px/1.5 var(--font-mono);color:var(--muted)}
+.nextline b{color:var(--amber);font-weight:500}
+.steps3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin-top:52px}
+.stp{border-top:3px solid var(--amber);padding-top:18px;min-width:0}
+.stp .n{display:block;font:700 clamp(84px,11vw,160px)/.85 var(--font-display);letter-spacing:-.06em;color:transparent;-webkit-text-stroke:2px var(--ink);margin-bottom:14px}
+.stp h3{font-size:clamp(22px,2.2vw,30px)}
+.stp p{color:var(--muted);margin-top:8px;max-width:32ch}
+.callout{margin-top:56px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding:30px 32px;border:1px dashed var(--amber);background:rgba(255,163,26,.05)}
+.callout b{font:700 clamp(22px,2.6vw,32px)/1.1 var(--font-display);letter-spacing:-.03em}
+.callout p{color:var(--muted);margin-top:8px}
+.datebig{margin-top:34px;font:700 clamp(48px,7vw,104px)/.95 var(--font-display);letter-spacing:-.05em;color:var(--amber);overflow-wrap:anywhere}
+.datebig small{display:block;font:500 12px/1 var(--font-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.subhead{margin:110px 0 36px;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.subhead h3{font-size:clamp(28px,4vw,52px);letter-spacing:-.04em;text-transform:uppercase}
+.subhead p{color:var(--muted)}
+
+/* community collage */
+.hint{font:400 12.5px/1 var(--font-mono);color:var(--muted);margin-top:28px;letter-spacing:.04em}
+.board{position:relative;height:800px;margin-top:20px}
+.pola{position:absolute;margin:0;background:#f4f1ff;color:#1a1530;padding:10px 10px 12px;box-shadow:0 22px 44px -14px rgba(0,0,0,.7);transform:rotate(var(--r,0deg));transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .3s;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.pola img{width:100%;display:block;aspect-ratio:var(--ar);object-fit:cover;pointer-events:none;-webkit-user-drag:none}
+.pola figcaption{font:500 12px/1.3 var(--font-mono);padding:10px 2px 0;color:#2a2147;letter-spacing:.02em}
+.pola::before{content:"";position:absolute;top:-13px;left:50%;width:84px;height:24px;transform:translateX(-50%) rotate(var(--tr,-3deg));background:rgba(255,163,26,.7)}
+.pola:hover{transform:rotate(0deg) scale(1.04);z-index:20}
+.pola.drag{cursor:grabbing;transform:rotate(0deg) scale(1.06);box-shadow:0 40px 70px -16px rgba(0,0,0,.8);transition:box-shadow .3s}
+
+/* project gallery */
+.gallery{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:48px;align-items:stretch}
+.g-list{display:flex;flex-direction:column;justify-content:center}
+.g-tab{all:unset;box-sizing:border-box;position:relative;cursor:pointer;display:flex;flex-direction:column;gap:10px;padding:26px 0 28px 30px;border-top:1px solid var(--line);color:var(--muted);transition:color .25s;flex:1;justify-content:center}
+.g-tab:last-child{border-bottom:1px solid var(--line)}
+.g-tab::before{content:"";position:absolute;left:0;top:34px;width:12px;height:12px;background:var(--line);transition:background .3s}
+.g-tab.active::before{background:var(--amber)}
+.g-tab:hover{color:var(--ink)}
+.g-tab:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.g-tab.active{color:var(--ink)}
+.g-n{font:700 clamp(28px,3.4vw,46px)/1 var(--font-display);letter-spacing:-.04em}
+.g-s{font:400 12px/1.3 var(--font-mono);color:var(--muted)}
+.g-bar{position:absolute;left:0;right:0;bottom:-1px;height:2px}
+.g-bar i{display:block;height:100%;width:0;background:var(--amber)}
+.gallery.live .g-tab.active .g-bar i{animation:fillbar 8s linear forwards}
+.gallery:hover .g-bar i,.gallery:focus-within .g-bar i{animation-play-state:paused}
+@keyframes fillbar{to{width:100%}}
+.g-stage{display:grid;border:1px solid var(--line);background:var(--surface);min-width:0}
+.g-panel{grid-area:1/1;min-width:0;opacity:0;visibility:hidden;transition:opacity .5s,visibility .5s}
+.g-panel.active{opacity:1;visibility:visible}
+.g-art{aspect-ratio:16/10;border-bottom:1px solid var(--line);background-image:radial-gradient(circle,#2e2650 1px,transparent 1.5px);background-size:22px 22px;background-color:var(--bg)}
+.g-art svg{width:100%;height:100%;display:block}
+.g-info{padding:28px 30px 32px;display:flex;flex-direction:column;gap:14px}
+.g-info h3{font-size:clamp(26px,3vw,38px)}
+.g-info p{color:var(--muted);font-size:17px;max-width:60ch}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.chips span{font:400 11.5px/1 var(--font-mono);padding:7px 9px;border:1px solid var(--line);color:var(--ink)}
+.g-panel:not(.active) *{animation-play-state:paused}
+.svg-t{font:400 12px var(--font-mono);fill:var(--muted)}
+.svg-b{font:500 14px var(--font-mono);fill:var(--ink)}
+.tile{fill:var(--bg);stroke:var(--line);stroke-width:2}
+.tile.t1,.tile.t2,.tile.t3,.tile.t4{animation:hl 6s steps(1,end) infinite}
+.tile.t2{animation-delay:1.5s}
+.tile.t3{animation-delay:3s}
+.tile.t4{animation-delay:4.5s}
+@keyframes hl{0%,24%{fill:var(--amber);stroke:var(--amber)}25%,100%{fill:var(--bg);stroke:var(--line)}}
+.eye-p{animation:gaze 4.5s ease-in-out infinite}
+@keyframes gaze{0%,100%{transform:translateX(-16px)}50%{transform:translateX(16px)}}
+.wv{transform-box:fill-box;transform-origin:center;animation:wave 1.2s ease-in-out infinite}
+@keyframes wave{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
+.ping{transform-box:fill-box;transform-origin:center;animation:ping 2.4s ease-out infinite}
+.ping.p2{animation-delay:1.2s}
+@keyframes ping{0%{transform:scale(.4);opacity:.9}100%{transform:scale(3.4);opacity:0}}
+.flow{fill:none;stroke:var(--violet);stroke-width:2;stroke-dasharray:10 14;animation:flow 1.4s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-48}}
+
+
+
+/* marquee call to action */
+.cta-band{display:block;margin-top:160px;border-block:1px solid var(--line);background:var(--surface);overflow:hidden;text-decoration:none;padding-block:30px}
+.mq-track{display:flex;width:max-content;animation:mq 34s linear infinite}
+.mq-group{display:flex;align-items:center;gap:40px;padding-right:40px}
+.mq-group span{font:700 clamp(44px,8vw,120px)/1 var(--font-display);letter-spacing:-0.04em;text-transform:uppercase;color:transparent;-webkit-text-stroke:1.5px var(--ink);white-space:nowrap;transition:color .3s,-webkit-text-stroke-color .3s}
+.mq-group i{width:18px;height:18px;background:var(--amber);flex:none;display:block}
+.cta-band:hover .mq-group span,.cta-band:focus-visible .mq-group span{color:var(--amber);-webkit-text-stroke-color:var(--amber)}
+@keyframes mq{to{transform:translateX(-50%)}}
+.join-row{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding-block:44px 0}
+.join-row p{color:var(--muted);font-size:18px;max-width:48ch}
+.join-row .btns{margin-top:0}
+
+footer{margin-top:120px;padding-block:40px 56px;border-top:1px solid var(--line)}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:flex-start}
+footer p{font:400 12.5px/1.6 var(--font-mono);color:var(--muted);max-width:52ch}
+footer a{color:var(--ink)}
+
+@media (max-width:960px){
+  .stage::after{background:linear-gradient(0deg,var(--bg) 0%,color-mix(in srgb,var(--bg) 82%,transparent) 48%,transparent 78%)}
+  .stage-grid{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:0;align-items:start;padding-top:8px}
+  .chip-anchor{order:-1;width:min(60vw,30svh)}
+  .copy{align-self:center}
+  .stage h1{font-size:clamp(38px,11vw,64px);margin-top:12px}
+  .lede{margin-top:14px;font-size:16px}
+  .btns{margin-top:20px}
+  .next{margin-top:20px}
+  .slide .status{margin-top:18px}
+  .gallery{grid-template-columns:minmax(0,1fr);gap:24px}
+  .g-list{flex-direction:row;overflow-x:auto;scroll-snap-type:x mandatory}
+  .g-tab{flex:0 0 min(70%,250px);scroll-snap-align:start;padding:22px 0 24px 26px;border-bottom:1px solid var(--line)}
+  .g-tab::before{top:28px}
+  .pillars{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:36px 22px}
+  .pillar,.pillar:nth-child(even){min-height:360px}
+  .two{grid-template-columns:minmax(0,1fr);gap:36px}
+  .steps3{grid-template-columns:minmax(0,1fr);gap:40px}
+}
+@media (max-width:860px){
+  .tlh{grid-template-columns:minmax(0,1fr);padding:0 0 0 46px;gap:34px;margin-top:0}
+  .tlh::before{left:10px;right:auto;top:0;bottom:0;width:2px;height:auto;background:repeating-linear-gradient(180deg,var(--line) 0 8px,transparent 8px 14px)}
+  .tlh::after{left:10px;top:0;width:2px;height:var(--fill,0px)}
+  .tl-i .node{left:-46px;top:2px}
+  .today{display:none}
+  .board{height:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 16px;padding-top:14px}
+  .pola{position:static;width:auto!important;touch-action:auto;cursor:default;transform:rotate(calc(var(--r,0deg) * .6))}
+  .pola:hover{transform:rotate(0deg)}
+  .hint{display:none}
+}
+@media (max-width:700px){
+  nav a:not(.cta){display:none}
+  nav{margin-left:auto}
+  .sec{padding-block:100px 0}
+  .cta-band{margin-top:100px}
+  .st:not(.on) span{display:none}
+  .st{padding-right:8px}
+  .cue{display:none}
+  .svg-t{font-size:20px}
+  .g-info{padding:22px 20px 26px}
+  .subhead{margin-top:80px}
+  .callout{padding:24px 22px}
+}
+@media (max-width:560px){
+  .pillars{grid-template-columns:minmax(0,1fr)}
+  .pillar,.pillar:nth-child(even){min-height:300px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="AWS Student Builder Group at UW, home">
+      <svg aria-hidden="true"><use href="#chip"/></svg>
+      <span>AWS Student<br>Builder Group @ UW</span>
+    </a>
+    <nav aria-label="Primary">
+      <a href="#workshops">Workshops</a>
+      <a href="#project-cycles">Project cycles</a>
+      <a href="#hackathon">Hackathon</a>
+      <a href="#community">Community</a>
+      <a class="cta" href="https://docs.google.com/forms/d/19YqIVBXf0nBzen_QsWFY0RMDuvrQRDKM7e16qxQyF7A/viewform">Join</a>
+    </nav>
+  </div>
+</header>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="chip" viewBox="0 0 9 9">
+    <path d="M0 2h1v1H0zM0 4h1v1H0zM0 6h1v1H0zM1 2h1v5H1zM7 2h1v5H7zM8 2h1v1H8zM8 4h1v1H8zM8 6h1v1H8zM2 1h5v1H2zM2 7h5v1H2zM2 0h1v1H2zM4 0h1v1H4zM6 0h1v1H6zM2 8h1v1H2zM4 8h1v1H4zM6 8h1v1H6z"/>
+  </symbol>
+</svg>
+
+<main id="main">
+
+<section class="story" id="story">
+  <div class="stage p0" id="stage">
+    <canvas id="stage-cv" aria-hidden="true"></canvas>
+    <div class="wrap stage-grid" id="top">
+      <div class="copy">
+        <div class="slides">
+          <div class="slide s0 on">
+            <p class="eyebrow">University of Washington · Seattle</p>
+            <h1><span>Build</span><span>on the</span><span class="amber">cloud.</span></h1>
+            <p class="lede">A student community at UW where anyone can learn AWS, build something real, and find people to build with.</p>
+            <div class="btns">
+              <a class="btn primary" href="https://docs.google.com/forms/d/19YqIVBXf0nBzen_QsWFY0RMDuvrQRDKM7e16qxQyF7A/viewform">Join the group</a>
+              <a class="btn" href="#overview">Explore the club</a>
+            </div>
+            <p class="next" id="next"><span class="dot" aria-hidden="true"></span><span>next up</span><b id="next-name">Workshop</b><span id="next-when">Sat Nov 14</span><span class="in" id="next-in"></span></p>
+          </div>
+          <div class="slide s1">
+            <p class="eyebrow">Workshops</p>
+            <h2 class="word">Learn.</h2>
+            <p class="lede">Technical, hands-on sessions for every skill level. Learn core AWS services by building with them.</p>
+            <span class="status">Open to all</span>
+          </div>
+          <div class="slide s2">
+            <p class="eyebrow">Project cycles</p>
+            <h2 class="word">Team up.</h2>
+            <p class="lede">A quarterly program where small teams build and deploy a real project on AWS.</p>
+            <span class="status soon">Applications · coming soon</span>
+          </div>
+                    <div class="slide s3">
+            <p class="eyebrow">Hackathon</p>
+            <h2 class="word">Ship.</h2>
+            <p class="lede">AWS Hacks is our annual hackathon, hosted with Seattle University. One weekend to build with AWS and show what you made.</p>
+            <span class="status">May 1–2</span>
+          </div>
+          <div class="slide s4">
+            <p class="eyebrow">Community</p>
+            <h2 class="word">Connect.</h2>
+            <p class="lede">Monthly socials and a group of students who like building. A low-pressure way to meet people.</p>
+            <span class="status">All welcome</span>
+          </div>
+        </div>
+      </div>
+      <div class="chip-anchor" id="chip-anchor" aria-hidden="true"></div>
+    </div>
+    <div class="wrap steps-wrap">
+      <ol class="steps" aria-label="Programs">
+        <li><button class="st on" type="button" data-i="0" aria-label="Overview"><i></i><span>Overview</span></button></li>
+        <li><button class="st" type="button" data-i="1" aria-label="Workshops"><i></i><span>Workshops</span></button></li>
+        <li><button class="st" type="button" data-i="2" aria-label="Project cycles"><i></i><span>Project cycles</span></button></li>
+        <li><button class="st" type="button" data-i="3" aria-label="Hackathon"><i></i><span>Hackathon</span></button></li>
+        <li><button class="st" type="button" data-i="4" aria-label="Community"><i></i><span>Community</span></button></li>
+      </ol>
+      <div class="cue" aria-hidden="true"><span>Scroll</span><i></i></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec wrap" id="overview">
+  <div class="sec-top" data-r>
+    <h2 class="mega">Our pillars</h2>
+    <p>Four ways into the club. Pick one to see how it works.</p>
+  </div>
+  <div class="pillars" data-r>
+    <a class="pillar" href="#workshops">
+      <svg class="ico" viewBox="0 0 64 64" aria-hidden="true"><polyline points="20,18 8,32 20,46"/><polyline points="44,18 56,32 44,46"/><line x1="37" y1="12" x2="27" y2="52"/></svg>
+      <h3>Workshops</h3>
+      <p>We teach AWS to every skill level, with guest speakers and industry connections.</p>
+      <span class="status">Open to all</span>
+      <span class="go">Explore →</span>
+    </a>
+    <a class="pillar" href="#project-cycles">
+      <svg class="ico" viewBox="0 0 64 64" aria-hidden="true"><circle cx="18" cy="14" r="6"/><circle cx="18" cy="50" r="6"/><circle cx="46" cy="22" r="6"/><line x1="18" y1="20" x2="18" y2="44"/><path d="M46 28c0 12-28 6-28 16"/></svg>
+      <h3>Project cycles</h3>
+      <p>Build a project from start to finish and present it to professionals.</p>
+      <span class="status soon">Applications soon</span>
+      <span class="go">Explore →</span>
+    </a>
+    <a class="pillar" href="#hackathon">
+      <svg class="ico" viewBox="0 0 64 64" aria-hidden="true"><polygon points="36,6 14,36 30,36 26,58 50,26 33,26"/></svg>
+      <h3>Hackathon</h3>
+      <p>AWS Hacks, our annual hackathon with Seattle University.</p>
+      <span class="status">May 1–2</span>
+      <span class="go">Explore →</span>
+    </a>
+    <a class="pillar" href="#community">
+      <svg class="ico" viewBox="0 0 64 64" aria-hidden="true"><path d="M8 10h32v24H22l-10 10V34H8z"/><path d="M28 40h12l12 12V40h4V22H46"/></svg>
+      <h3>Community</h3>
+      <p>Monthly socials and a crew of students who like building.</p>
+      <span class="status">All welcome</span>
+      <span class="go">Explore →</span>
+    </a>
+  </div>
+</section>
+
+<section class="sec wrap" id="timeline">
+  <div class="sec-top" data-r>
+    <h2 class="mega sm">Coming up</h2>
+    <p>Dates are added here as they’re confirmed. Times and rooms are still to be announced.</p>
+  </div>
+  <div class="tlh" id="tlh" data-r>
+    <span class="today" id="today" hidden>Today</span>
+    <article class="tl-i" data-date="2026-10-29"><span class="node"></span><span class="d">Thu · Oct 29</span><h3>Kickoff</h3><p>Meet the team and find out how to get involved.</p></article>
+    <article class="tl-i" data-date="2026-11-14"><span class="node"></span><span class="d">Sat · Nov 14</span><h3>Workshop</h3><p>Hands-on AWS for every skill level.</p><span class="status">Open to all</span></article>
+    <article class="tl-i" data-date="2026-11-17"><span class="node"></span><span class="d">Tue · Nov 17</span><h3>Friendsgiving</h3><p>Food and company before the break.</p><span class="status">Social</span></article>
+    <article class="tl-i"><span class="node"></span><span class="d">Winter</span><h3>Project cycle applications</h3><p>Applications for the winter cohort open soon.</p><span class="status soon">Coming soon</span></article>
+    <article class="tl-i" data-date="2027-05-01"><span class="node"></span><span class="d">Sat–Sun · May 1–2</span><h3>AWS Hacks</h3><p>Our annual hackathon with Seattle University.</p></article>
+  </div>
+</section>
+
+<section class="sec wrap" id="workshops">
+  <div class="sec-top" data-r>
+    <div><p class="eyebrow">Learn</p><h2 class="mega">Workshops</h2></div>
+    <a class="back" href="#overview">↑ Pillars</a>
+  </div>
+  <div class="two" data-r>
+    <figure class="photo">
+      <img src="img/workshop.jpg" alt="A classroom of students watching a presentation on a projector screen.">
+      <figcaption>a session in progress</figcaption>
+    </figure>
+    <div>
+      <p class="lead">We teach AWS to students at every skill level. Start with the basics or go deeper, in sessions built around hands-on work.</p>
+      <ul class="feats">
+        <li>
+          <svg class="ico" viewBox="0 0 64 64" aria-hidden="true"><path d="M8 54V42h14V30h14V18h16v36z"/></svg>
+          <div><h3>Every skill level</h3><p>New to the cloud or already building? Workshops are open to everyone, and you don’t need prior AWS experience.</p></div>
+        </li>
+        <li>
+          <svg class="ico" viewBox="0 0 64 64" aria-hidden="true"><rect x="24" y="8" width="16" height="30" rx="8"/><path d="M16 30c0 10 7 16 16 16s16-6 16-16"/><line x1="32" y1="46" x2="32" y2="58"/></svg>
+          <div><h3>Guest speakers</h3><p>Learn from people who work with AWS and hear how they build.</p></div>
+        </li>
+        <li>
+          <svg class="ico" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="14" r="6"/><circle cx="12" cy="48" r="6"/><circle cx="52" cy="48" r="6"/><path d="M28 19L15 43M36 19l13 24M18 48h28"/></svg>
+          <div><h3>Industry network</h3><p>Meet industry professionals and build connections that last past the session.</p></div>
+        </li>
+      </ul>
+      <p class="nextline">Next workshop: <b>Sat, Nov 14</b> · time &amp; room to be announced</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec wrap" id="project-cycles">
+  <div class="sec-top" data-r>
+    <div><p class="eyebrow">Team up</p><h2 class="mega">Project cycles</h2></div>
+    <a class="back" href="#overview">↑ Pillars</a>
+  </div>
+  <p class="lead" data-r>The winter cohort is a quarter-long program for learning AWS and computing, and creating a project of your own.</p>
+  <div class="steps3" data-r>
+    <div class="stp"><span class="n">1</span><h3>Learn</h3><p>Learn AWS and core computing concepts alongside your cohort.</p></div>
+    <div class="stp"><span class="n">2</span><h3>Build</h3><p>Develop a project from start to finish with your team.</p></div>
+    <div class="stp"><span class="n">3</span><h3>Present</h3><p>Network with industry professionals and present what you built.</p></div>
+  </div>
+  <div class="callout" data-r>
+    <div><b>Winter cohort</b><p>Applications open soon. Join the group to hear first.</p></div>
+    <a class="btn primary" href="https://docs.google.com/forms/d/19YqIVBXf0nBzen_QsWFY0RMDuvrQRDKM7e16qxQyF7A/viewform">Join the group</a>
+  </div>
+</section>
+
+<section class="sec wrap" id="hackathon">
+  <div class="sec-top" data-r>
+    <div><p class="eyebrow">Ship</p><h2 class="mega">Hackathon</h2></div>
+    <a class="back" href="#overview">↑ Pillars</a>
+  </div>
+  <div class="two" data-r>
+    <div>
+      <p class="lead">We host an annual hackathon in partnership with Seattle University, called AWS Hacks.</p>
+      <p class="datebig"><small>Next AWS Hacks</small>May 1–2</p>
+    </div>
+    <figure class="photo">
+      <img src="img/hacks.jpg" alt="Organizers and guests lined up on a small stage in front of a screen reading AWS Hacks, May 16 to 17, 2026.">
+      <figcaption>AWS Hacks · May 16–17, 2026</figcaption>
+    </figure>
+  </div>
+  <div class="subhead" data-r>
+    <h3>Past projects</h3>
+    <p>Built by students at AWS Hacks 2026.</p>
+  </div>
+  <div class="gallery" id="gallery" data-r>
+    <div class="g-list" role="tablist" aria-label="Past hackathon projects">
+      <button class="g-tab active" role="tab" type="button" id="gt0" aria-selected="true" aria-controls="gp0"><span class="g-n">Kural</span><span class="g-s">Assistive communication</span><span class="g-bar"><i></i></span></button>
+      <button class="g-tab" role="tab" type="button" id="gt1" aria-selected="false" aria-controls="gp1" tabindex="-1"><span class="g-n">ARIA</span><span class="g-s">Emergency response</span><span class="g-bar"><i></i></span></button>
+      <button class="g-tab" role="tab" type="button" id="gt2" aria-selected="false" aria-controls="gp2" tabindex="-1"><span class="g-n">FishFlow</span><span class="g-s">Environmental engineering</span><span class="g-bar"><i></i></span></button>
+    </div>
+    <div class="g-stage">
+
+      <article class="g-panel active" role="tabpanel" id="gp0" aria-labelledby="gt0">
+        <div class="g-art">
+          <svg viewBox="0 0 640 400" role="img" aria-label="Animated diagram: an eye looks at a grid of intent tiles, and a waveform shows the cloned voice speaking.">
+            <g fill="none" stroke="var(--ink)" stroke-width="2.5"><path d="M36 200 Q112 128 188 200 Q112 272 36 200Z"/><circle cx="112" cy="200" r="30" stroke="var(--violet)"/></g>
+            <circle class="eye-p" cx="112" cy="200" r="11" fill="var(--amber)"/>
+            <path d="M196 200H238" stroke="var(--violet)" stroke-width="2" stroke-dasharray="4 6" fill="none"/>
+            <rect class="tile t1" x="248" y="136" width="84" height="56"/><rect class="tile t2" x="344" y="136" width="84" height="56"/>
+            <rect class="tile t3" x="248" y="204" width="84" height="56"/><rect class="tile t4" x="344" y="204" width="84" height="56"/>
+            <path d="M440 200H470" stroke="var(--violet)" stroke-width="2" stroke-dasharray="4 6" fill="none"/>
+            <g transform="translate(482 200)" fill="var(--amber)">
+              <rect class="wv" x="0" y="-10" width="6" height="20" style="animation-delay:.0s"/><rect class="wv" x="12" y="-22" width="6" height="44" style="animation-delay:.1s"/>
+              <rect class="wv" x="24" y="-36" width="6" height="72" style="animation-delay:.2s"/><rect class="wv" x="36" y="-19" width="6" height="38" style="animation-delay:.3s"/>
+              <rect class="wv" x="48" y="-44" width="6" height="88" style="animation-delay:.4s"/><rect class="wv" x="60" y="-28" width="6" height="56" style="animation-delay:.5s"/>
+              <rect class="wv" x="72" y="-15" width="6" height="30" style="animation-delay:.6s"/><rect class="wv" x="84" y="-32" width="6" height="64" style="animation-delay:.7s"/>
+              <rect class="wv" x="96" y="-20" width="6" height="40" style="animation-delay:.8s"/><rect class="wv" x="108" y="-11" width="6" height="22" style="animation-delay:.9s"/>
+            </g>
+            <text class="svg-t" x="112" y="330" text-anchor="middle">eye tracking</text>
+            <text class="svg-t" x="338" y="330" text-anchor="middle">intent tiles</text>
+            <text class="svg-t" x="539" y="330" text-anchor="middle">cloned voice</text>
+          </svg>
+        </div>
+        <div class="g-info">
+          <h3>Kural</h3>
+          <p>A communication device for people with ALS. Eye tracking selects an intent, Amazon Bedrock writes the sentence, and it plays back in a voice cloned from the person’s own recordings.</p>
+          <div class="chips"><span>Amazon Bedrock</span><span>SageMaker</span><span>Lambda</span><span>API Gateway</span><span>DynamoDB</span><span>S3</span><span>Cognito</span></div>
+        </div>
+      </article>
+
+      <article class="g-panel" role="tabpanel" id="gp1" aria-labelledby="gt1">
+        <div class="g-art">
+          <svg viewBox="0 0 640 400" role="img" aria-label="Animated diagram: response units travel along city streets toward an incident, and a recommendation card waits for the dispatcher to approve.">
+            <g stroke="var(--line)" stroke-width="2" fill="none">
+              <path d="M40 80H400M40 160H400M40 240H400M40 320H400"/><path d="M80 40V360M160 40V360M240 40V360M320 40V360M400 40V360"/>
+            </g>
+            <path d="M80 320V160H240" stroke="var(--amber)" stroke-width="3" stroke-dasharray="8 8" fill="none"/>
+            <circle class="ping" cx="240" cy="160" r="12" fill="none" stroke="var(--amber)" stroke-width="2"/>
+            <circle class="ping p2" cx="240" cy="160" r="12" fill="none" stroke="var(--amber)" stroke-width="2"/>
+            <rect x="232" y="152" width="16" height="16" fill="var(--amber)"/>
+            <rect x="388" y="148" width="24" height="24" fill="var(--bg)" stroke="var(--violet)" stroke-width="2"/><path d="M400 154v12M394 160h12" stroke="var(--violet)" stroke-width="3"/>
+            <rect x="-6" y="-6" width="12" height="12" fill="var(--ink)"><animateMotion path="M80 320V160H240" dur="5s" repeatCount="indefinite"/></rect>
+            <rect x="-5" y="-5" width="10" height="10" fill="var(--muted)"><animateMotion path="M400 80H240V160" dur="6s" repeatCount="indefinite"/></rect>
+            <rect x="-5" y="-5" width="10" height="10" fill="var(--muted)"><animateMotion path="M400 320H240V160" dur="7s" repeatCount="indefinite"/></rect>
+            <rect x="436" y="108" width="172" height="184" fill="var(--bg)" stroke="var(--line)" stroke-width="2"/>
+            <text class="svg-t" x="452" y="136">recommended</text>
+            <rect x="452" y="150" width="110" height="8" fill="var(--ink)"/><rect x="452" y="168" width="140" height="6" fill="var(--line)"/><rect x="452" y="184" width="124" height="6" fill="var(--line)"/><rect x="452" y="200" width="132" height="6" fill="var(--line)"/>
+            <rect x="452" y="238" width="140" height="34" fill="var(--amber)"/><text x="522" y="260" text-anchor="middle" style="font:600 14px var(--font-mono);fill:#1a1100">Approve</text>
+            <text class="svg-t" x="220" y="352" text-anchor="middle">units · incident · hospital</text>
+          </svg>
+        </div>
+        <div class="g-info">
+          <h3>ARIA</h3>
+          <p>Autonomous Response Incident Assistant. During a live 911 call it gathers incident details, unit availability, hospital capacity and protocols, then surfaces one recommendation for the dispatcher to approve.</p>
+          <div class="chips"><span>Amazon Bedrock</span><span>Python</span><span>TypeScript</span></div>
+        </div>
+      </article>
+
+      <article class="g-panel" role="tabpanel" id="gp2" aria-labelledby="gt2">
+        <div class="g-art">
+          <svg viewBox="0 0 640 400" role="img" aria-label="Animated diagram: water flows around baffles in a fish passage while a fish swims upstream, producing a PDF verdict.">
+            <rect x="40" y="90" width="400" height="220" fill="none" stroke="var(--line)" stroke-width="2"/>
+            <path class="flow" d="M40 140C95 140 90 225 139 225S195 120 249 120S305 225 359 225S410 225 440 225"/>
+            <path class="flow" style="animation-delay:-.4s" d="M40 165C95 165 90 250 139 250S195 150 249 150S305 250 359 250S410 250 440 250"/>
+            <path class="flow" style="animation-delay:-.8s" d="M40 190C95 190 90 275 139 275S195 180 249 180S305 275 359 275S410 275 440 275"/>
+            <rect x="130" y="90" width="18" height="110" fill="var(--surface-2)" stroke="var(--amber)" stroke-width="2"/>
+            <rect x="240" y="200" width="18" height="110" fill="var(--surface-2)" stroke="var(--amber)" stroke-width="2"/>
+            <rect x="350" y="90" width="18" height="110" fill="var(--surface-2)" stroke="var(--amber)" stroke-width="2"/>
+            <g><ellipse cx="0" cy="0" rx="15" ry="7" fill="var(--amber)"/><path d="M12 0L25 -8V8Z" fill="var(--amber)"/><rect x="-9" y="-3" width="3" height="3" fill="var(--bg)"/>
+              <animateMotion path="M430 262H359C320 262 300 165 249 165C200 165 180 262 139 262H50" dur="10s" repeatCount="indefinite"/></g>
+            <path d="M470 110h96l38 38v142H470z" fill="var(--bg)" stroke="var(--line)" stroke-width="2"/><path d="M566 110v38h38" fill="none" stroke="var(--line)" stroke-width="2"/>
+            <text x="488" y="192" style="font:700 26px var(--font-display);fill:var(--ink)">PDF</text>
+            <rect x="488" y="208" width="96" height="6" fill="var(--line)"/><rect x="488" y="224" width="70" height="6" fill="var(--line)"/>
+            <path d="M490 266l10 10 22-24" fill="none" stroke="var(--amber)" stroke-width="4"/>
+            <text class="svg-t" x="40" y="346">STL design</text><text class="svg-t" x="240" y="346" text-anchor="middle">CFD on AWS</text><text class="svg-t" x="537" y="346" text-anchor="middle">verdict</text>
+          </svg>
+        </div>
+        <div class="g-info">
+          <h3>FishFlow</h3>
+          <p>Upload a fish-passage design and a target species. FishFlow runs a CFD simulation on AWS, checks it against USFWS criteria, and returns a PDF verdict in about 30 seconds.</p>
+          <div class="chips"><span>Lambda</span><span>Fargate</span><span>API Gateway</span><span>S3</span><span>CloudFront</span><span>Cognito</span><span>Amazon Bedrock</span></div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="sec wrap" id="community">
+  <div class="sec-top" data-r>
+    <div><p class="eyebrow">Connect</p><h2 class="mega">Community</h2></div>
+    <a class="back" href="#overview">↑ Pillars</a>
+  </div>
+  <p class="lead" data-r>We host monthly socials, so you can meet other builders outside the workshops. Friendsgiving on Nov 17 is next.</p>
+  <p class="hint">Drag the photos around.</p>
+  <div class="board" id="board">
+    <figure class="pola" style="--ar:4/3;--r:-3deg;left:2%;top:10px;width:34%"><img src="img/hacks.jpg" alt="Organizers and guests lined up on a small stage in front of a screen reading AWS Hacks."><figcaption>AWS Hacks 2026</figcaption></figure>
+    <figure class="pola" style="--ar:4/3;--r:2.5deg;left:63%;top:0;width:31%"><img src="img/crossed.jpg" alt="Eleven club members posing in a brick-walled atrium with their arms crossed over their chests."><figcaption>the crew</figcaption></figure>
+    <figure class="pola" style="--ar:3/4;--r:-1.5deg;left:39%;top:70px;width:20%;--tr:4deg"><img src="img/trio.jpg" alt="Three club members with arms around each other, standing on a log by the water." style="object-position:50% 72%"><figcaption>club members</figcaption></figure>
+    <figure class="pola" style="--ar:3/2;--r:2deg;left:5%;top:350px;width:35%"><img src="img/group.jpg" alt="About twenty club members posing together on a pebble beach by the water, many holding a hand up in a C shape."><figcaption>the whole group</figcaption></figure>
+    <figure class="pola" style="--ar:3/2;--r:-2.5deg;left:44%;top:440px;width:29%;--tr:-5deg"><img src="img/workshop.jpg" alt="A classroom of students watching a presentation on a projector screen."><figcaption>a session in progress</figcaption></figure>
+    <figure class="pola" style="--ar:3/4;--r:3deg;left:77%;top:310px;width:19%"><img src="img/jump.jpg" alt="A member leaping to hit a volleyball in a gym." style="object-position:50% 46%"><figcaption>volleyball social</figcaption></figure>
+  </div>
+</section>
+
+<a class="cta-band" href="https://docs.google.com/forms/d/19YqIVBXf0nBzen_QsWFY0RMDuvrQRDKM7e16qxQyF7A/viewform" aria-label="Join AWS Student Builder Group: open the membership form">
+  <div class="mq-track">
+    <div class="mq-group"><span>Join the group</span><i></i><span>Join the group</span><i></i><span>Join the group</span><i></i></div>
+    <div class="mq-group" aria-hidden="true"><span>Join the group</span><i></i><span>Join the group</span><i></i><span>Join the group</span><i></i></div>
+  </div>
+</a>
+<div class="wrap join-row">
+  <p>Complete the membership form for event details and our social channels. Every skill level is welcome.</p>
+  <div class="btns"><a class="btn primary" href="https://docs.google.com/forms/d/19YqIVBXf0nBzen_QsWFY0RMDuvrQRDKM7e16qxQyF7A/viewform">Open the membership form</a></div>
+</div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top"><svg aria-hidden="true"><use href="#chip"/></svg><span>AWS Student<br>Builder Group @ UW</span></a>
+    <p>A student-led community at the University of Washington, affiliated with Amazon Web Services. Find our Instagram, LinkedIn and more through the <a href="https://docs.google.com/forms/d/19YqIVBXf0nBzen_QsWFY0RMDuvrQRDKM7e16qxQyF7A/viewform">membership form</a>.<br>© 2026 AWS Student Builder Group at UW</p>
+  </div>
+</footer>
+
+<script>
+/* next-event callout */
+(function(){
+  var EV=[
+    {y:2026,m:9,d:29,name:'Kickoff',when:'Thu Oct 29'},
+    {y:2026,m:10,d:14,name:'Workshop',when:'Sat Nov 14'},
+    {y:2026,m:10,d:17,name:'Friendsgiving',when:'Tue Nov 17'},
+    {y:2027,m:4,d:1,name:'AWS Hacks',when:'Sat May 1'}
+  ];
+  var n=new Date(),today=new Date(n.getFullYear(),n.getMonth(),n.getDate()),pick=null,diff=0;
+  for(var i=0;i<EV.length;i++){
+    var dd=Math.round((new Date(EV[i].y,EV[i].m,EV[i].d)-today)/864e5);
+    if(dd>=0){pick=EV[i];diff=dd;break}
+  }
+  var box=document.getElementById('next');
+  if(!pick){if(box)box.hidden=true;return}
+  document.getElementById('next-name').textContent=pick.name;
+  document.getElementById('next-when').textContent=pick.when;
+  document.getElementById('next-in').textContent=diff===0?'today':diff===1?'tomorrow':'in '+diff+' days';
+})();
+
+/* hero canvas: the logo chip on a pixel grid. Ripples radiate from it, data pulses leave through its pins,
+   the pointer lights nearby cells, and the scroll phase decides which side of the chip is active. */
+(function(){
+  var hero=document.getElementById('stage'),cv=document.getElementById('stage-cv'),anchor=document.getElementById('chip-anchor'),story=document.getElementById('story');
+  if(!hero||!cv||!cv.getContext||!anchor)return;
+  var ctx=cv.getContext('2d');
+  var reduce=false;try{reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}
+
+  var CHIP=[],TEETH=[];
+  function tooth(c,r,dx,dy){TEETH.push({c:c,r:r,dx:dx,dy:dy,flash:0});CHIP.push({c:c,r:r,t:TEETH.length-1})}
+  [2,4,6].forEach(function(k){tooth(k,0,0,-1);tooth(k,8,0,1);tooth(0,k,-1,0);tooth(8,k,1,0)});
+  for(var k=2;k<=6;k++){CHIP.push({c:k,r:1,t:-1});CHIP.push({c:k,r:7,t:-1});CHIP.push({c:1,r:k,t:-1});CHIP.push({c:7,r:k,t:-1})}
+  CHIP.forEach(function(p){p.delay=Math.hypot(p.c-4,p.r-4)*70+((p.c*7+p.r*13)%5)*40});
+
+  var phase=0;
+  function allowed(T){
+    return phase===0||(phase===1&&T.dx===-1)||(phase===2&&T.dy===-1)||(phase===3&&T.dx===1)||(phase===4&&T.dy===1);
+  }
+
+  var W=0,H=0,dpr=1,s=20,u=40,ox=0,oy=0,offX=0,offY=0,maxR=800;
+  var ripples=[],pulses=[],ptr={x:0,y:0,on:false};
+  var t0=performance.now(),nextRipple=t0+900,nextSpawn=t0+1500,lastEmit=t0,lastNow=t0;
+
+  function measure(){
+    var r=hero.getBoundingClientRect();W=r.width;H=r.height;
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    s=W<700?14:20;
+    var a=anchor.getBoundingClientRect(),m=Math.min(a.width,a.height);
+    var kk=Math.max(2,Math.floor(m/9/s));
+    u=kk*s;
+    var size=9*u,cx=a.left-r.left+a.width/2,cy=a.top-r.top+a.height/2;
+    ox=Math.round((cx-size/2)/s)*s;oy=Math.round((cy-size/2)/s)*s;
+    offX=((ox%s)+s)%s;offY=((oy%s)+s)%s;
+    maxR=Math.max(W,H)*0.9;
+  }
+
+  function draw(now){
+    var t=now-t0,dt=Math.max(0,now-lastNow);lastNow=now;
+    var cx=ox+4.5*u,cy=oy+4.5*u;
+    ctx.clearRect(0,0,W,H);
+
+    if(!reduce){
+      if(now>=nextRipple){ripples.push({x:cx,y:cy,t0:now,v:170,a:0.9});lastEmit=now;nextRipple=now+2600}
+      if(t>1500&&now>=nextSpawn){
+        var pool=TEETH.filter(allowed),T=pool[Math.floor(Math.random()*pool.length)];
+        T.flash=1;
+        pulses.push({x:ox+(T.c+.5)*u,y:oy+(T.r+.5)*u,dx:T.dx,dy:T.dy,t0:now,v:s*18,head:0});
+        nextSpawn=now+(phase?150:240)+Math.random()*(phase?260:420);
+      }
+      ripples=ripples.filter(function(r){return (now-r.t0)*r.v/1000<maxR});
+      pulses=pulses.filter(function(p){return (now-p.t0)*p.v/1000<Math.max(W,H)*1.1+s*8});
+      TEETH.forEach(function(T){T.flash=Math.max(0,T.flash-dt/420)});
+    }
+    pulses.forEach(function(p){p.head=(now-p.t0)*p.v/1000});
+
+    var glow=Math.exp(-(now-lastEmit)/600);
+    var g=ctx.createRadialGradient(cx,cy,u,cx,cy,u*9);
+    g.addColorStop(0,'rgba(122,92,255,'+(0.2+0.2*glow).toFixed(3)+')');
+    g.addColorStop(1,'rgba(122,92,255,0)');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+
+    var trail=s*8,i,j;
+    for(var y=offY-s;y<H+s;y+=s){
+      var py=y+s/2;
+      for(var x=offX-s;x<W+s;x+=s){
+        var px=x+s/2;
+        if(px>ox&&px<ox+9*u&&py>oy&&py<oy+9*u)continue;
+        var hv=0,ha=0;
+        for(i=0;i<ripples.length;i++){
+          var rp=ripples[i],rr=(now-rp.t0)*rp.v/1000,df=Math.hypot(px-rp.x,py-rp.y)-rr;
+          if(df>-s*2.5&&df<s*2.5)hv+=Math.exp(-df*df/(2.4*s*s))*rp.a*Math.max(0,1-rr/maxR);
+        }
+        if(ptr.on){
+          var pd=Math.hypot(px-ptr.x,py-ptr.y);
+          if(pd<120){var q=1-pd/120;hv+=q*q*0.9}
+        }
+        for(j=0;j<pulses.length;j++){
+          var pl=pulses[j],ex=px-pl.x,ey=py-pl.y,al=ex*pl.dx+ey*pl.dy;
+          if(al<=0||Math.abs(ex*pl.dy-ey*pl.dx)>s*0.6)continue;
+          var ds=pl.head-al;
+          if(ds>=0&&ds<trail)ha+=1-ds/trail;
+        }
+        var sz;
+        if(ha>0.03){
+          ha=Math.min(ha,1);sz=s*(0.2+0.55*ha);
+          ctx.fillStyle='rgba(255,163,26,'+(0.35+0.65*ha).toFixed(3)+')';
+        }else{
+          hv=Math.min(hv,1);sz=s*(0.14+0.5*hv);
+          ctx.fillStyle='rgba(139,108,255,'+(0.14+0.75*hv).toFixed(3)+')';
+        }
+        ctx.fillRect(px-sz/2,py-sz/2,sz,sz);
+      }
+    }
+
+    var gap=Math.max(2,Math.round(u*0.07));
+    CHIP.forEach(function(p){
+      var k=reduce?1:Math.min(1,Math.max(0,(t-p.delay)/360));
+      if(k<=0)return;
+      k=1-Math.pow(1-k,3);
+      var size=(u-gap)*k,qx=ox+p.c*u+u/2,qy=oy+p.r*u+u/2;
+      var f=p.t>=0?TEETH[p.t].flash:0;
+      if(p.t>=0&&phase>0&&allowed(TEETH[p.t]))f=Math.max(f,reduce?0.7:0.55+0.2*Math.sin(t/260));
+      var rC=Math.round(244+11*f),gC=Math.round(241-78*f),bC=Math.round(255-229*f);
+      ctx.fillStyle='rgba('+rC+','+gC+','+bC+','+k.toFixed(3)+')';
+      ctx.fillRect(qx-size/2,qy-size/2,size,size);
+    });
+
+    var coreK=reduce?1:Math.min(1,Math.max(0,(t-900)/400));
+    if(coreK>0){
+      ctx.fillStyle='rgba(139,108,255,'+(0.16*coreK).toFixed(3)+')';
+      for(var a=-1;a<=1;a++)for(var b=-1;b<=1;b++){
+        if(a===0&&b===0)continue;
+        var rs=u*0.5;ctx.fillRect(cx+a*u-rs/2,cy+b*u-rs/2,rs,rs);
+      }
+      var beat=reduce?0.6:0.5+0.5*Math.sin(t/420),cs=u*(0.3+0.22*beat)*coreK;
+      ctx.fillStyle='rgba(255,163,26,0.95)';
+      ctx.fillRect(cx-cs/2,cy-cs/2,cs,cs);
+    }
+  }
+
+  var running=false,raf=0;
+  function loop(now){if(!running)return;draw(now);raf=requestAnimationFrame(loop)}
+  function start(){if(running||reduce)return;running=true;lastNow=performance.now();raf=requestAnimationFrame(loop)}
+  function stop(){running=false;cancelAnimationFrame(raf)}
+  function still(){ripples=[{x:ox+4.5*u,y:oy+4.5*u,t0:0,v:170,a:0.9}];lastEmit=1400;draw(1700)}
+
+  window.__heroPhase=function(i){
+    if(i===phase)return;
+    phase=i;
+    if(reduce){still();return}
+    var now=performance.now();
+    ripples.push({x:ox+4.5*u,y:oy+4.5*u,t0:now,v:340,a:1});
+    lastEmit=now;
+  };
+
+  function rel(e){var r=hero.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
+  hero.addEventListener('pointermove',function(e){var p=rel(e);ptr.x=p.x;ptr.y=p.y;ptr.on=true});
+  hero.addEventListener('pointerleave',function(){ptr.on=false});
+  hero.addEventListener('pointerdown',function(e){
+    if(reduce)return;
+    var p=rel(e);ptr.x=p.x;ptr.y=p.y;ptr.on=true;
+    ripples.push({x:p.x,y:p.y,t0:performance.now(),v:300,a:1});
+  });
+
+  measure();
+  if(reduce){still()}else{start()}
+  if(window.ResizeObserver){
+    new ResizeObserver(function(){measure();if(reduce)still()}).observe(hero);
+  }else{window.addEventListener('resize',function(){measure();if(reduce)still()})}
+  if(window.IntersectionObserver&&!reduce){
+    new IntersectionObserver(function(en){en[0].isIntersecting?start():stop()},{threshold:0}).observe(story||hero);
+  }
+  document.addEventListener('visibilitychange',function(){if(reduce)return;document.hidden?stop():start()});
+})();
+
+/* page interactions */
+(function(){
+  var root=document.documentElement,reduce=false;
+  try{reduce=matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}
+  function vh(){return window.innerHeight||document.documentElement.clientHeight}
+  function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+  var header=document.querySelector('header.top');
+  function hh(){return header?header.offsetHeight:64}
+  function setHH(){root.style.setProperty('--hh',hh()+'px')}
+  setHH();
+
+  /* pinned story: scroll picks the phase */
+  var story=document.getElementById('story'),stage=document.getElementById('stage');
+  var slides=story?[].slice.call(story.querySelectorAll('.slide')):[],steps=story?[].slice.call(story.querySelectorAll('.st')):[];
+  var curPhase=-1;
+  function setPhase(i){
+    if(i===curPhase)return;curPhase=i;
+    slides.forEach(function(sl,j){sl.classList.toggle('on',j===i);sl.classList.toggle('past',j<i)});
+    steps.forEach(function(b,j){b.classList.toggle('on',j===i);if(j===i)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current')});
+    stage.classList.toggle('p0',i===0);
+    if(window.__heroPhase)window.__heroPhase(i);
+  }
+  function storyTravel(){return story.offsetHeight-stage.offsetHeight}
+  function updStory(){
+    if(!story)return;
+    var r=story.getBoundingClientRect(),travel=storyTravel();
+    var p=travel>0?clamp((hh()-r.top)/travel,0,1):0;
+    setPhase(Math.min(slides.length-1,Math.floor(p*slides.length)));
+  }
+  steps.forEach(function(b,j){
+    b.addEventListener('click',function(){
+      var top=story.getBoundingClientRect().top+window.pageYOffset;
+      var y=top-hh()+((j+0.5)/slides.length)*storyTravel();
+      window.scrollTo({top:y,behavior:reduce?'auto':'smooth'});
+    });
+  });
+
+  /* timeline: past items dim, the line fills up to today */
+  var tlh=document.getElementById('tlh'),items=tlh?[].slice.call(tlh.querySelectorAll('.tl-i')):[];
+  function dateOf(el){var d=el.getAttribute('data-date');if(!d)return null;var p=d.split('-');return new Date(+p[0],+p[1]-1,+p[2])}
+  function layoutTl(){
+    if(!tlh)return;
+    var n=new Date(),today=new Date(n.getFullYear(),n.getMonth(),n.getDate());
+    var vert=matchMedia('(max-width:860px)').matches,base=tlh.getBoundingClientRect();
+    var pos=items.map(function(it){var nd=it.querySelector('.node').getBoundingClientRect();return vert?nd.top-base.top+nd.height/2:nd.left-base.left+nd.width/2});
+    var done=-1,upnext=-1;
+    items.forEach(function(it,i){
+      var d=dateOf(it),past=!!(d&&d<today);
+      it.classList.toggle('past',past);
+      if(past)done=i;else if(upnext<0)upnext=i;
+      it.classList.remove('upnext');
+    });
+    if(upnext>=0)items[upnext].classList.add('upnext');
+    var fill=0;
+    if(done>=0){
+      if(done===items.length-1)fill=pos[done];
+      else{
+        var d0=dateOf(items[done]),d1=dateOf(items[done+1]),frac=d1?clamp((today-d0)/(d1-d0),0,1):0.3;
+        fill=pos[done]+frac*(pos[done+1]-pos[done]);
+      }
+    }
+    tlh.style.setProperty('--fill',fill.toFixed(1)+'px');
+    var tp=document.getElementById('today');if(tp)tp.hidden=(done<0||vert);
+  }
+
+  var tick=false;
+  function onS(){if(tick)return;tick=true;requestAnimationFrame(function(){tick=false;updStory()})}
+  function onR(){setHH();layoutTl();onS()}
+  addEventListener('scroll',onS,{passive:true});
+  addEventListener('resize',onR);
+  addEventListener('load',onR);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(onR);
+  layoutTl();onS();
+
+  /* reveal on scroll */
+  if('IntersectionObserver' in window&&!reduce){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('r-in');io.unobserve(e.target)}})},{threshold:.12});
+    [].slice.call(document.querySelectorAll('[data-r]')).forEach(function(el){
+      if(el.getBoundingClientRect().top>vh()*0.9){el.classList.add('r-pre');io.observe(el)}
+    });
+  }
+
+  /* drag-around photo collage */
+  var board=document.getElementById('board');
+  if(board){
+    var z=10;
+    [].forEach.call(board.querySelectorAll('.pola'),function(el){
+      var sx=0,sy=0,bx=0,by=0,drag=false;
+      el.addEventListener('pointerdown',function(e){
+        if(!matchMedia('(min-width:861px)').matches)return;
+        drag=true;
+        bx=el.offsetLeft;by=el.offsetTop;
+        el.style.width=el.offsetWidth+'px';el.style.left=bx+'px';el.style.top=by+'px';
+        sx=e.clientX;sy=e.clientY;
+        try{el.setPointerCapture(e.pointerId)}catch(err){}
+        el.style.zIndex=String(++z);el.classList.add('drag');
+      });
+      el.addEventListener('pointermove',function(e){
+        if(!drag)return;
+        el.style.left=clamp(bx+e.clientX-sx,-24,board.clientWidth-el.offsetWidth+24)+'px';
+        el.style.top=clamp(by+e.clientY-sy,-24,board.clientHeight-el.offsetHeight+24)+'px';
+      });
+      function end(){drag=false;el.classList.remove('drag')}
+      el.addEventListener('pointerup',end);
+      el.addEventListener('pointercancel',end);
+    });
+  }
+
+  /* project gallery */
+  var gal=document.getElementById('gallery');
+  if(gal){
+    var tabs=[].slice.call(gal.querySelectorAll('.g-tab')),pans=[].slice.call(gal.querySelectorAll('.g-panel')),cur=0;
+    function show(i,focus){
+      cur=i;
+      tabs.forEach(function(t,j){var on=j===i;t.classList.toggle('active',on);t.setAttribute('aria-selected',on?'true':'false');t.tabIndex=on?0:-1});
+      pans.forEach(function(p,j){p.classList.toggle('active',j===i)});
+      if(focus)tabs[i].focus();
+    }
+    tabs.forEach(function(t,i){t.addEventListener('click',function(){show(i)})});
+    gal.addEventListener('keydown',function(e){
+      var k=e.key,n=tabs.length;
+      if(k==='ArrowDown'||k==='ArrowRight'){e.preventDefault();show((cur+1)%n,true)}
+      else if(k==='ArrowUp'||k==='ArrowLeft'){e.preventDefault();show((cur+n-1)%n,true)}
+      else if(k==='Home'){e.preventDefault();show(0,true)}
+      else if(k==='End'){e.preventDefault();show(n-1,true)}
+    });
+    gal.addEventListener('animationend',function(e){if(e.animationName==='fillbar')show((cur+1)%tabs.length)});
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(en){gal.classList.toggle('live',en[0].isIntersecting)},{threshold:.25}).observe(gal);
+    }
+    if(reduce){[].forEach.call(gal.querySelectorAll('svg'),function(sv){if(sv.pauseAnimations)sv.pauseAnimations()})}
+  }
+})();
+</script>
