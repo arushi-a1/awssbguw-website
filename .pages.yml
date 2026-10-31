@@ -1,1 +1,48 @@
-test
+media:
+  input: img
+  output: /img
+  categories: [image]
+
+content:
+  - name: events
+    label: Events timeline
+    type: file
+    path: content/events.json
+    format: json
+    fields:
+      - name: events
+        label: Events
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Title, type: string }
+          - { name: date, label: Start date, type: date, description: "Leave empty if not confirmed" }
+          - { name: label, label: Date label shown on the card, type: string, description: "e.g. Sat · Nov 14" }
+          - { name: description, label: Description, type: text }
+          - { name: tag, label: Badge, type: string, description: "e.g. Open to all, Social, Coming soon" }
+
+  - name: photos
+    label: Community photos
+    type: file
+    path: content/photos.json
+    format: json
+    fields:
+      - name: photos
+        label: Photos
+        type: object
+        list: true
+        fields:
+          - { name: image, label: Image, type: image }
+          - { name: caption, label: Caption, type: string }
+          - { name: alt, label: Alt text, type: string }
+
+  - name: site
+    label: Site text & links
+    type: file
+    path: content/site.json
+    format: json
+    fields:
+      - { name: join_form_url, label: Membership form URL, type: string }
+      - { name: mission, label: Mission line, type: text }
+      - { name: hackathon_dates, label: Hackathon dates, type: string }
+      - { name: workshop_time_room, label: Next workshop time & room, type: string }
